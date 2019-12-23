@@ -113,7 +113,7 @@ green&white;,;09/15/17,   Gail Phelps   ;,;$30.52
 #------------------------------------------------
 # Start coding below!
 
-daily_sales_replaced = daily_sales.replace(';,;','&')
+daily_sales_replaced = daily_sales.replace(';,;','_')
 
 daily_transactions = daily_sales_replaced.split(',')
 
@@ -121,7 +121,7 @@ daily_transactions = daily_sales_replaced.split(',')
 daily_transactions_split = []
 
 for transaction in daily_transactions:
-  daily_transactions_split.append(transaction.split('&'))
+  daily_transactions_split.append(transaction.split('_'))
   
 
 transactions_clean = []
@@ -139,24 +139,36 @@ thread_sold = []
 for transaction in transactions_clean:
   customers.append(transaction[0])
   sales.append(transaction[1])
-  thread_sold.append(transaction[2:-1])
+  thread_sold.append(transaction[2])
   
-print(customers)
-print(sales)
-print(thread_sold)
+total_sales = 0
+
+for sale in sales:
+  total_sales += float(sale.strip('$'))
+  
+print('The total sales today was {total_sales}'.format(total_sales=total_sales))
+
+thread_sold_split = []
 
 
+for thread in thread_sold:
+  if thread.find('&') == -1:
+    thread_sold_split.append(thread)
+  else:
+    tsplit = thread.split('&')
+    for t in tsplit:
+      thread_sold_split.append(t)
 
 
+def color_count(color):
+  c_count = 0
+  for t in thread_sold_split:
+    if t == color:
+      c_count += 1
+  return c_count
+    
+# print(color_count('white'))
 
+colors = ['red','yellow','green','white','black','blue','purple']
 
-
-
-
-
-
-
-
-
-
-
+print('There were {} red, {} yellow, {} green, {} white, {} black, {} blue, and {} purple threads sold today.'.format(color_count('red'), color_count('yellow'), color_count('green'), color_count('white'), color_count('black'), color_count('blue'), color_count('purple')))
